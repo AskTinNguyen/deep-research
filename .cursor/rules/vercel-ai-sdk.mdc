@@ -1,0 +1,44 @@
+---
+description: Implementing Latest Vercel AI SDK 4.0
+globs: *route.ts
+---
+Always refer to the latest documentation here: https://sdk.vercel.ai/docs/ai-sdk-core
+
+- Use the Vercel AI SDK UI for implementing streaming chat UI.
+- Use the Vercel AI SDK Core to interact with language models.
+- Use the Vercel AI SDK RSC and Stream Helpers to stream and help with the generations.
+- Implement proper error handling for AI responses and model switching.
+- Implement fallback mechanisms for when an AI model is unavailable.
+- Handle rate limiting and quota exceeded scenarios gracefully.
+- Provide clear error messages to users when AI interactions fail.
+- Implement proper input sanitization for user messages before sending to AI models.
+- Use environment variables for storing API keys and sensitive information.
+
+Sample Implementation
+import { streamText } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+// Allow responses up to 5 minutes
+export const maxDuration = 300;
+
+export async function POST(req: Request) {
+  try {
+    const { messages } = await req.json();
+
+    const result = streamText({
+      model: openai('o3-mini'),
+      messages,
+      // Configure reasoning effort for optimal performance
+      providerOptions: {
+        openai: { 
+          reasoningEffort: 'medium' // Default to medium for balanced performance
+        },
+      },
+    });
+
+    return result.toDataStreamResponse();
+  } catch (error) {
+    console.error('[Research API Error]:', error);
+    return new Response('An error occurred during research processing', { status: 500 });
+  }
+}
