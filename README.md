@@ -113,6 +113,32 @@ OPENAI_KEY="your_openai_key"
 docker compose run --rm deep-research
 ```
 
+### Package Management with Docker
+
+When adding new npm packages while using Docker, follow these steps to ensure all dependencies are properly installed in the container:
+
+1. Install new packages locally first:
+```bash
+npm install your-new-package
+```
+
+2. Rebuild the Docker image to include the new dependencies:
+```bash
+docker compose build
+```
+
+3. Restart the container:
+```bash
+docker compose up
+```
+
+This process ensures that:
+- All dependencies are properly installed in the container
+- Package versions are locked and consistent
+- The container uses the exact same dependencies as your local environment
+
+> **Important**: Always rebuild the Docker image after adding new packages. The container won't automatically pick up changes to package.json without a rebuild.
+
 ## Usage
 
 Run the research assistant:

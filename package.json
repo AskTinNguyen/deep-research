@@ -23,9 +23,11 @@
   "dependencies": {
     "@ai-sdk/openai": "^1.1.9",
     "@mendable/firecrawl-js": "^1.16.0",
-    "ai": "^4.1.17",
+    "ai": "^4.1.26",
     "js-tiktoken": "^1.0.17",
     "lodash-es": "^4.17.21",
+    "openai": "^4.83.0",
+    "openai-edge": "^1.2.2",
     "p-limit": "^6.2.0",
     "zod": "^3.24.1"
   },

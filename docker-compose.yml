@@ -1,7 +1,38 @@
+version: '3.8'
+
 services:
   deep-research:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: deep-research
     env_file:
       - .env.local
+    environment:
+      - NODE_ENV=production
+    volumes:
+      # Mount the source code for development
+      - ./src:/app/src
+      # Mount the output directory to persist research results
+      - ./output:/app/output
+      # Exclude node_modules from volume mount
+      - /app/node_modules
+    # Enable interactive mode for the CLI
     tty: true
     stdin_open: true
+    # Restart policy
+    restart: unless-stopped
+    # Resource constraints (adjust as needed)
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+    # Health check to ensure the container is running properly
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('health check')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
